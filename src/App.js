@@ -14,7 +14,9 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch(
+        "https://react-http-15586-default-rtdb.firebaseio.com/movies.json"
+      );
       if (!response.ok) {
         throw new Error("something went wrong!");
       }
@@ -41,8 +43,19 @@ function App() {
     fetchMovieHandler();
   }, [fetchMovieHandler]);
 
-  function addMovieHandler(movie) {
-    console.log(movie);
+  async function addMovieHandler(movie) {
+    const response = await fetch(
+      "https://react-http-15586-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "Contecnt-type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
   }
 
   let content = <p>Found no movies.</p>;
